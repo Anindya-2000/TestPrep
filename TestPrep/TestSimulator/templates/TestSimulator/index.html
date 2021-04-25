@@ -1,0 +1,149 @@
+{% extends 'TestSimulator/base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/TestSimulator/index.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.slider-btn').click(function(){
+                var sliderContent = $('.progress-details');
+                if(sliderContent.css("width") == '0px'){
+                    sliderContent.animate({width:'475px'},500);
+                    $(this).text(">>");
+                }
+                else if(sliderContent.css("width") == '475px'){
+                    sliderContent.animate({width:'0px'},500);
+                    $(this).text("<<");
+                }
+            });
+        })
+        
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class = "body-container">
+        <div class = "question-container">
+            <div id = "question-id" class = "question-no">
+                Question 1
+            </div>
+            <hr>
+            <div id = "question-content">
+                <img src = "{% static 'images/jeemains/Q.png' %}" alt = "Question" id = "question-img">
+            </div>
+            <hr>
+            <div class = "buttons">
+                <button id = "button-1">SAVE AND NEXT</button>
+                <button id = "button-2">CLEAR</button>
+                <button id = "button-3">SAVE AND MARK FOR REVIEW</button>
+                <button id = "button-4">MARK FOR REVIEW AND NEXT</button>
+            </div>
+            
+
+            <div class = "navigation">
+                <div class = "back-next">
+                    <button id = "back"><span>BACK</span></button>
+                    <button id = "next"><span>NEXT</span></button>
+                </div>
+                <button id = "submit">SUBMIT</button>
+            </div>
+        </div>
+        <div class = "progress-container">
+            <div>
+                <button class = "slider-btn">>></button>
+            </div>
+            
+            <div class = "progress-details">
+                <div class = "attempt-details-container">
+                    <div class = "attempt-info-row">
+                        <div>
+                            <div class = "not-visited">
+                                <span>99</span>
+                            </div>
+                            <span>Not Visited</span>
+                        </div>
+                        <div>
+                            <div class = "not-answered">
+                                <span>10</span>
+                            </div>
+                            <span>Not Answered</span>
+                        </div> 
+                    </div>
+                    <div class = "attempt-info-row">
+                        <div>
+                            <div class = "answered">
+                                <span>1</span>
+                            </div>
+                            <span>Answered</span>
+                        </div>
+                        <div>
+                            <div class = "marked-for-review">
+                                <span>5</span>
+                            </div>
+                            <span><pre>Marked for      <br>review</pre></span>
+                        </div> 
+                    </div>
+                    <div class = "attempt-info-row">
+                        <div>
+                            <div class = "answered-with-review">
+                                <span>20</span>
+                            </div>
+                            <span>Answered and marked for review <br>(Will be considered for evaluation)</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class = "question-pallete">
+                    <div class = "attempt-info-row">
+                        <div class = "not-visited question" id = "Q1">
+                            <span>1</span>
+                        </div>
+                    </div>
+    
+                    <div class = "attempt-info-row">
+                        <div class = "not-visited question" id = "Q2">
+                            <span>1</span>
+                        </div>
+                    </div>
+    
+                    <div class = "attempt-info-row">
+                        <div class = "not-visited question" id = "Q3">
+                            <span>1</span>
+                        </div>
+                    </div>
+    
+                    <div class = "attempt-info-row">
+                        <div class = "not-visited question" id = "Q4">
+                            <span>1</span>
+                        </div>
+                    </div>
+    
+                    <div class = "attempt-info-row">
+                        <div class = "not-visited question" id = "Q5">
+                            <span>1</span>
+                        </div>
+                    </div>
+    
+                    <div class = "attempt-info-row">
+                        <div class = "not-visited question" id = "Q6">
+                            <span>1</span>
+                        </div>
+                    </div>
+    
+                    <div class = "attempt-info-row">
+                        <div class = "not-visited question" id = "Q7">
+                            <span>1</span>
+                        </div>
+                    </div>
+    
+                    <div class = "attempt-info-row">
+                        <div class = "not-visited question" id = "Q8">
+                            <span>1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
