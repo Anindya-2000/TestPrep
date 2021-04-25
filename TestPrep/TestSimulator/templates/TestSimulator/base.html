@@ -1,0 +1,22 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/TestSimulator/header.css' %}">
+        <link rel="stylesheet" href="{% static 'css/TestSimulator/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/TestSimulator/footer.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+        {% block head %}
+
+        {% endblock %}
+    </head>
+    <body>
+        {% include 'TestSimulator/header.html' %}
+
+        {% block body %}
+
+        {% endblock %}
+
+        {% include 'TestSimulator/footer.html' %}
+    </body>
+</html>

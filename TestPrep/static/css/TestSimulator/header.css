@@ -1,0 +1,32 @@
+.header-container{
+    width: 100%;
+    min-height: 100px;
+}
+
+.student-info-container{
+    width: 100%;
+    display: flex;
+    background-color:cyan;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 50px;
+}
+
+@media only screen and (max-width:500px){
+    .student-info-container{
+        padding-left: 5px;
+    }  
+}
+
+.student-info{
+    display: inline;
+}
+
+.student-img {
+    padding:10px;
+}
+.student-info ul {
+    list-style-type: none;
+    margin:0px;
+    padding: 10px;
+}
