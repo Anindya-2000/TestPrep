@@ -31,7 +31,7 @@ class QuestionPaper(models.Model):
     year=models.IntegerField( null=True, default=2020)
     name=models.CharField(max_length=500,null=True)
     def __str__(self):
-        return self.name
+        return self.exam+str(self.year)+"_"+self.name
 
 class SingleIntegerType(models.Model):
     question=models.ImageField(upload_to=create_path)
@@ -39,5 +39,5 @@ class SingleIntegerType(models.Model):
     QuestionNumber = models.IntegerField(null=True)
     QuestionPaper=models.ForeignKey(QuestionPaper, on_delete=models.DO_NOTHING)
     def __str__(self):
-        return str(self.correct_answer)
+        return str(self.QuestionNumber)+"_"+self.QuestionPaper.exam+"_"+str(self.QuestionPaper.year)+"_"+self.QuestionPaper.name
     
