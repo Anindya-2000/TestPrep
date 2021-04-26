@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="{% static 'css/TestSimulator/index.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        
+        // Slider JS
         $(document).ready(function(){
             $('.slider-btn').click(function(){
                 var sliderContent = $('.progress-details');
@@ -16,9 +18,185 @@
                     $(this).text("<<");
                 }
             });
-        })
+        });
+
+        var N = 90;
+        // Ajax Call
+        $(document).ready(()=>{
+            // Initialize the attempt summary
+            $('.not-visited-count').text(N-1);
+            $('.not-answered-count').text(1);
+            $('.answered-count').text(0);
+            $('.marked-for-review-count').text(0);
+            $('.answered-with-review-count').text(0);
+
+            for(let i = 1; i <= N; ++i){
+                // Initially only the first question will remain active
+                if(i == 1){
+                    var $div = $('<div>', {id:'question-' + i, class:'question-div active'});
+                }
+                else{
+                    var $div = $('<div>', {id:'question-' + i, class:'question-div'});
+                }
+
+                // Append question image
+                var $questionImg = $('<img>',{id:'question-image-' + i, class:'question-img'});
+                $questionImg.attr('src',"{% static 'images/jeemains/Q.png' %}");
+                $questionImg.attr('alt',"Question " + i);
+                $div.append($questionImg);
+
+                // Append options form
+                var $form = $('<form>',{id: 'form-' + i});
+                var $option1 = $('<div><input id = ' + "option-" + i + '-1' + ' type = "radio" name = "question" value = "A"><label for = ' + "option-" + i + '-1' + '>A</label></div>');
+                var $option2 = $('<div><input id = ' + "option-" + i + '-2' + ' type = "radio" name = "question" value = "B"><label for = ' + "option-" + i + '-2' + '>B</label></div>');
+                var $option3 = $('<div><input id = ' + "option-" + i + '-3' + ' type = "radio" name = "question" value = "C"><label for = ' + "option-" + i + '-3' + '>C</label></div>');
+                var $option4 = $('<div><input id = ' + "option-" + i + '-4' + ' type = "radio" name = "question" value = "D"><label for = ' + "option-" + i + '-4' + '>D</label></div>');
+                $form.append($option1,$option2,$option3,$option4);
+                $div.append($form);
+
+                // Append the whole question container
+                $('.question-content').append($div);
+
+                // Create the question-pallete
+                var $div = $('<div>', {class: 'attempt-info-row'});
+
+                $div.click(()=>{
+                    let curQuestionClass = $('#Q-' + i).attr('class');
+                    if(curQuestionClass.includes('not-visited')){
+                        decreaseCount(i);
+                        $('#Q-' + i).attr('class', 'not-answered question');
+                        increaseCount(i);
+                    }
+
+                    let Id = $('.active').attr('id');
+                    let questionNo = Id[Id.length-1];
+                    $('#' + Id).removeClass('active');
+
+                    $('#question-' + i).addClass('active');
+                })
+                // Initially only first question is visited
+                if(i == 1){
+                    var $question = $('<div>', {class: 'not-answered question', id: 'Q-' + i});
+                }
+                else{
+                    var $question = $('<div>', {class: 'not-visited question', id: 'Q-' + i});
+                }
+                
+                $question.append('<span>' + i + '</span>');
+                $div.append($question);
+                $('.question-pallete').append($div);
+            }
+        });
+
+        // Form submission
+        $(document).ready(()=>{
+            $('#submit').click(()=>{
+                for(var i=1;i<=N;++i){
+                    console.log($('#form-' + i).serialize());
+                }
+            });
+        });
         
+        function decreaseCount(id){
+            let questionClass = $('#Q-' + id).attr('class');
+            let questionState = questionClass.split(' ')[0];
+            let curVal = $('.' + questionState + '-count').text();
+            curVal--;
+            $('.' + questionState + '-count').text(curVal);
+        }
+
+        function increaseCount(id){
+            let questionClass = $('#Q-' + id).attr('class');
+            let questionState = questionClass.split(' ')[0];
+            let curVal = $('.' + questionState + '-count').text();
+            curVal++;
+            $('.' + questionState + '-count').text(curVal);
+        }
+        // Buttons funtionality
+        $(document).ready(()=>{
+            $('#button-1').click(()=>{
+                let Id = $('.active').attr('id');
+                let questionNo = Id.split('-')[1];
+                $('#' + Id).removeClass('active');
+
+                decreaseCount(questionNo);
+                $('#Q-' + questionNo).attr('class', 'answered question');
+                increaseCount(questionNo);
+
+                questionNo++;
+                if(questionNo == N + 1)
+                    questionNo = 1;
+                let nextQuestionId = '#question-' + questionNo;
+                $(nextQuestionId).addClass('active');
+                let nextQuestionClass = $('#Q-' + questionNo).attr('class');
+    
+                if(nextQuestionClass.includes('not-visited')){
+                    decreaseCount(questionNo);
+                    $('#Q-' + questionNo).attr('class', 'not-answered question');
+                    increaseCount(questionNo);
+                }
+            });
+
+            $('#button-2').click(()=>{
+                let Id = $('.active').attr('id');
+                let questionNo = Id.split('-')[1];
+                let e = $('#form-' + questionNo + ' input[type="radio"]:checked').prop('checked',false);
+
+                let questionClass = $('#Q-' + questionNo).attr('class');
+                let questionState = questionClass.split(' ')[0];
+                if(questionState != 'not-answered'){
+                    decreaseCount(questionNo);
+                }
+                $('#Q-' + questionNo).attr('class', 'not-answered question');
+                increaseCount(questionNo);
+            });
+
+            $('#button-3').click(()=>{
+                let Id = $('.active').attr('id');
+                let questionNo = Id.split('-')[1];
+                $('#' + Id).removeClass('active');
+                decreaseCount(questionNo);
+                $('#Q-' + questionNo).attr('class', 'answered-with-review question');
+                increaseCount(questionNo);
+
+                questionNo++;
+                if(questionNo == N + 1)
+                    questionNo = 1;
+                let nextQuestionId = '#question-' + questionNo;
+                $(nextQuestionId).addClass('active');
+                let nextQuestionClass = $('#Q-' + questionNo).attr('class');
+    
+                if(nextQuestionClass.includes('not-visited')){
+                    decreaseCount(questionNo);
+                    $('#Q-' + questionNo).attr('class', 'not-answered question');
+                    increaseCount(questionNo);
+                }
+            });
+
+            $('#button-4').click(()=>{
+                let Id = $('.active').attr('id');
+                let questionNo = Id.split('-')[1];
+                $('#' + Id).removeClass('active');
+                decreaseCount(questionNo);
+                $('#Q-' + questionNo).attr('class', 'marked-for-review question');
+                increaseCount(questionNo);
+
+                questionNo++;
+                if(questionNo == N + 1)
+                    questionNo = 1;
+                let nextQuestionId = '#question-' + questionNo;
+                $(nextQuestionId).addClass('active');
+                let nextQuestionClass = $('#Q-' + questionNo).attr('class');
+    
+                if(nextQuestionClass.includes('not-visited')){
+                    decreaseCount(questionNo);
+                    $('#Q-' + questionNo).attr('class', 'not-answered question');
+                    increaseCount(questionNo);
+                }
+            });
+        })
     </script>
+    
 {% endblock %}
 
 {% block body %}
@@ -28,8 +206,8 @@
                 Question 1
             </div>
             <hr>
-            <div id = "question-content">
-                <img src = "{% static 'images/jeemains/Q.png' %}" alt = "Question" id = "question-img">
+            <div class = "question-content">
+               
             </div>
             <hr>
             <div class = "buttons">
@@ -58,13 +236,13 @@
                     <div class = "attempt-info-row">
                         <div>
                             <div class = "not-visited">
-                                <span>99</span>
+                                <span class = "not-visited-count">99</span>
                             </div>
                             <span>Not Visited</span>
                         </div>
                         <div>
                             <div class = "not-answered">
-                                <span>10</span>
+                                <span class = "not-answered-count">10</span>
                             </div>
                             <span>Not Answered</span>
                         </div> 
@@ -72,13 +250,13 @@
                     <div class = "attempt-info-row">
                         <div>
                             <div class = "answered">
-                                <span>1</span>
+                                <span class = "answered-count">1</span>
                             </div>
                             <span>Answered</span>
                         </div>
                         <div>
                             <div class = "marked-for-review">
-                                <span>5</span>
+                                <span class = "marked-for-review-count">5</span>
                             </div>
                             <span><pre>Marked for      <br>review</pre></span>
                         </div> 
@@ -86,7 +264,7 @@
                     <div class = "attempt-info-row">
                         <div>
                             <div class = "answered-with-review">
-                                <span>20</span>
+                                <span class = "answered-with-review-count">20</span>
                             </div>
                             <span>Answered and marked for review <br>(Will be considered for evaluation)</span>
                         </div>
@@ -94,53 +272,7 @@
                 </div>
     
                 <div class = "question-pallete">
-                    <div class = "attempt-info-row">
-                        <div class = "not-visited question" id = "Q1">
-                            <span>1</span>
-                        </div>
-                    </div>
-    
-                    <div class = "attempt-info-row">
-                        <div class = "not-visited question" id = "Q2">
-                            <span>1</span>
-                        </div>
-                    </div>
-    
-                    <div class = "attempt-info-row">
-                        <div class = "not-visited question" id = "Q3">
-                            <span>1</span>
-                        </div>
-                    </div>
-    
-                    <div class = "attempt-info-row">
-                        <div class = "not-visited question" id = "Q4">
-                            <span>1</span>
-                        </div>
-                    </div>
-    
-                    <div class = "attempt-info-row">
-                        <div class = "not-visited question" id = "Q5">
-                            <span>1</span>
-                        </div>
-                    </div>
-    
-                    <div class = "attempt-info-row">
-                        <div class = "not-visited question" id = "Q6">
-                            <span>1</span>
-                        </div>
-                    </div>
-    
-                    <div class = "attempt-info-row">
-                        <div class = "not-visited question" id = "Q7">
-                            <span>1</span>
-                        </div>
-                    </div>
-    
-                    <div class = "attempt-info-row">
-                        <div class = "not-visited question" id = "Q8">
-                            <span>1</span>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             
