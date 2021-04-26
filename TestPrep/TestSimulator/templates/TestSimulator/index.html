@@ -61,6 +61,7 @@
                 var $div = $('<div>', {class: 'attempt-info-row'});
 
                 $div.click(()=>{
+                    $('.error').css('display','none');
                     let curQuestionClass = $('#Q-' + i).attr('class');
                     if(curQuestionClass.includes('not-visited')){
                         decreaseCount(i);
@@ -121,6 +122,7 @@
         // Buttons funtionality
         $(document).ready(()=>{
             $('#next').click(()=>{
+                $('.error').css('display','none');
                 let Id = $('.active').attr('id');
                 let questionNo = Id.split('-')[1];
                 $('#' + Id).removeClass('active');
@@ -141,6 +143,7 @@
             });
 
             $('#back').click(()=>{
+                $('.error').css('display','none');
                 let Id = $('.active').attr('id');
                 let questionNo = Id.split('-')[1];
                 $('#' + Id).removeClass('active');
@@ -163,6 +166,15 @@
             $('#button-1').click(()=>{
                 let Id = $('.active').attr('id');
                 let questionNo = Id.split('-')[1];
+                let selectedOption = $('#form-' + questionNo + ' input[type="radio"]:checked');
+                if(selectedOption.length == 0){
+                    $('.error').css('display','block');
+                    return;
+                }
+                else{
+                    $('.error').css('display','none');
+                }
+
                 $('#' + Id).removeClass('active');
 
                 decreaseCount(questionNo);
@@ -201,6 +213,16 @@
             $('#button-3').click(()=>{
                 let Id = $('.active').attr('id');
                 let questionNo = Id.split('-')[1];
+
+                let selectedOption = $('#form-' + questionNo + ' input[type="radio"]:checked');
+                if(selectedOption.length == 0){
+                    $('.error').css('display','block');
+                    return;
+                }
+                else{
+                    $('.error').css('display','none');
+                }
+
                 $('#' + Id).removeClass('active');
                 decreaseCount(questionNo);
                 $('#Q-' + questionNo).attr('class', 'answered-with-review question');
@@ -224,6 +246,7 @@
             $('#button-4').click(()=>{
                 let Id = $('.active').attr('id');
                 let questionNo = Id.split('-')[1];
+                $('.error').css('display','none');
                 $('#' + Id).removeClass('active');
                 decreaseCount(questionNo);
                 $('#Q-' + questionNo).attr('class', 'marked-for-review question');
@@ -259,6 +282,12 @@
                
             </div>
             <hr>
+            <div class = "error">
+                <div class = "error-icon">
+                    !
+                </div>
+                You must select an option
+            </div>
             <div class = "buttons">
                 <button id = "button-1">SAVE AND NEXT</button>
                 <button id = "button-2">CLEAR</button>

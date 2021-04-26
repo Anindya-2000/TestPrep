@@ -381,3 +381,27 @@ form{
 .active{
     display: block;
 }
+
+.error{
+    max-width: 500px;
+    padding: 10px 15px;
+    margin: 10px 0px;
+    background-color: #F54343;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    display: none;
+}
+
+.error-icon{
+    width: 30px; 
+    height: 30px; 
+    border-radius: 100%; 
+    background-color:#F54343;
+    border:3px solid white;
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    margin-right: 15px;
+}
