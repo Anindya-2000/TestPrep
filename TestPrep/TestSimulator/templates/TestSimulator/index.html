@@ -73,6 +73,7 @@
                     $('#' + Id).removeClass('active');
 
                     $('#question-' + i).addClass('active');
+                    setQuestionNo(i);
                 })
                 // Initially only first question is visited
                 if(i == 1){
@@ -112,8 +113,53 @@
             curVal++;
             $('.' + questionState + '-count').text(curVal);
         }
+
+        function setQuestionNo(id){
+            $('#question-id').text('Question ' + id);
+        }
+
         // Buttons funtionality
         $(document).ready(()=>{
+            $('#next').click(()=>{
+                let Id = $('.active').attr('id');
+                let questionNo = Id.split('-')[1];
+                $('#' + Id).removeClass('active');
+
+                questionNo++;
+                if(questionNo == N + 1)
+                    questionNo = 1;
+                let nextQuestionId = '#question-' + questionNo;
+                $(nextQuestionId).addClass('active');
+                let nextQuestionClass = $('#Q-' + questionNo).attr('class');
+    
+                if(nextQuestionClass.includes('not-visited')){
+                    decreaseCount(questionNo);
+                    $('#Q-' + questionNo).attr('class', 'not-answered question');
+                    increaseCount(questionNo);
+                }
+                setQuestionNo(questionNo);
+            });
+
+            $('#back').click(()=>{
+                let Id = $('.active').attr('id');
+                let questionNo = Id.split('-')[1];
+                $('#' + Id).removeClass('active');
+
+                questionNo--;
+                if(questionNo == 0)
+                    questionNo = N;
+                let nextQuestionId = '#question-' + questionNo;
+                $(nextQuestionId).addClass('active');
+                let nextQuestionClass = $('#Q-' + questionNo).attr('class');
+    
+                if(nextQuestionClass.includes('not-visited')){
+                    decreaseCount(questionNo);
+                    $('#Q-' + questionNo).attr('class', 'not-answered question');
+                    increaseCount(questionNo);
+                }
+                setQuestionNo(questionNo);
+            });
+
             $('#button-1').click(()=>{
                 let Id = $('.active').attr('id');
                 let questionNo = Id.split('-')[1];
@@ -135,6 +181,7 @@
                     $('#Q-' + questionNo).attr('class', 'not-answered question');
                     increaseCount(questionNo);
                 }
+                setQuestionNo(questionNo);
             });
 
             $('#button-2').click(()=>{
@@ -171,6 +218,7 @@
                     $('#Q-' + questionNo).attr('class', 'not-answered question');
                     increaseCount(questionNo);
                 }
+                setQuestionNo(questionNo);
             });
 
             $('#button-4').click(()=>{
@@ -193,6 +241,7 @@
                     $('#Q-' + questionNo).attr('class', 'not-answered question');
                     increaseCount(questionNo);
                 }
+                setQuestionNo(questionNo);
             });
         })
     </script>
