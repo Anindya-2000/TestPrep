@@ -15,9 +15,17 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.urls import reverse
-# from .utils import token_generator
 from django.utils.timezone import datetime
 from django.http import HttpResponseRedirect
+
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import viewsets, mixins, status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
+
+from . import serializers 
 
 def createQP(request):
     if request.method == 'POST':
@@ -45,6 +53,7 @@ def createQP(request):
     return render(request,'create_q.html',{'form':form})
 
 def uploadQP(request,qp,typeofq,numberOfquestion):
+
     if request.method == 'POST':
         form=UploadQuestions(extra=numberOfquestion,data=request.POST,files=request.FILES)
         if form.is_valid():
@@ -60,3 +69,17 @@ def uploadQP(request,qp,typeofq,numberOfquestion):
     elif request.method=='GET':
         form=UploadQuestions(numberOfquestion)
     return render(request, 'upload_q.html',{'form':form})
+
+
+@api_view(['GET'])
+def question_api(request, question_paper):
+    questions=SingleIntegerType.objects.filter(QuestionPaper=question_paper)
+    serialize=serializers.QuestionSerializer(questions,many=True)
+    return(Response(serialize.data))
+
+
+
+
+
+
+

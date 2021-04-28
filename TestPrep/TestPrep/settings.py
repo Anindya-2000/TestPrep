@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'TestSimulator',
     'crispy_forms',
+    'rest_framework'
     
 ]
 
