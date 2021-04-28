@@ -43,6 +43,8 @@ def createQP(request):
                 qp.exam=exam
                 qp.year=year
                 qp.name=details
+                qp.total_number_of_questions=0
+                qp.total_number_of_questions+=qp.numberOfquestion
                 qp.save()
                 pk=qp.pk
             else:
