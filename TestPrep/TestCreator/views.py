@@ -44,7 +44,7 @@ def createQP(request):
                 qp.year=year
                 qp.name=details
                 qp.total_number_of_questions=0
-                qp.total_number_of_questions+=qp.numberOfquestion
+                qp.total_number_of_questions+=qp.total_number_of_questions
                 qp.save()
                 pk=qp.pk
             else:
